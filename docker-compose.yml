@@ -305,13 +305,13 @@ services:
 
 
     ### PHP-FPM ##############################################
-    php-fpm-7.3:
+    php-fpm-7.4:
       build:
         context: ./php-fpm
         args:
           - CHANGE_SOURCE=${CHANGE_SOURCE}
           - BASE_IMAGE_TAG_PREFIX=${PHP_FPM_BASE_IMAGE_TAG_PREFIX}
-          - LARADOCK_PHP_VERSION=7.3
+          - LARADOCK_PHP_VERSION=7.4
           - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
           - INSTALL_BZ2=${PHP_FPM_INSTALL_BZ2}
           - INSTALL_ENCHANT=${PHP_FPM_INSTALL_ENCHANT}
@@ -385,7 +385,7 @@ services:
           - https_proxy
           - no_proxy
       volumes:
-        - ./php-fpm/php7.3.ini:/usr/local/etc/php/php.ini
+        - ./php-fpm/php7.4.ini:/usr/local/etc/php/php.ini
         - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}${APP_CODE_CONTAINER_FLAG}
         - docker-in-docker:/certs/client
       # ports:
@@ -514,7 +514,7 @@ services:
         - "${VARNISH_BACKEND_PORT}:81"
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - frontend
         - backend
@@ -527,7 +527,7 @@ services:
         - BLACKFIRE_SERVER_TOKEN=${BLACKFIRE_SERVER_TOKEN}
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - backend
 
@@ -551,7 +551,7 @@ services:
         - "${APACHE_HOST_HTTPS_PORT}:443"
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - frontend
         - backend
@@ -839,7 +839,7 @@ services:
         - "${MEMCACHED_HOST_PORT}:11211"
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - backend
 
@@ -851,7 +851,7 @@ services:
       privileged: true
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - backend
 
@@ -885,7 +885,7 @@ services:
         - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - backend
 
@@ -936,7 +936,7 @@ services:
         - ${DATA_PATH_HOST}/cassandra:/var/lib/cassandra
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - backend
 
@@ -970,7 +970,7 @@ services:
       hostname: laradock-gearman
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - backend
 
@@ -997,7 +997,7 @@ services:
         - "${CADDY_HOST_HTTPS_PORT}:443"
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - frontend
         - backend
@@ -1035,7 +1035,7 @@ services:
         - "${ADM_PORT}:8080"
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - frontend
         - backend
@@ -1093,7 +1093,7 @@ services:
         - "${ELASTICSEARCH_HOST_TRANSPORT_PORT}:9300"
       depends_on:
         - php-fpm
-        - php-fpm-7.3
+        - php-fpm-7.4
       networks:
         - frontend
         - backend
