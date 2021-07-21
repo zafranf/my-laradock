@@ -204,6 +204,9 @@ services:
       context: ./php-fpm
       args:
         - CHANGE_SOURCE=${CHANGE_SOURCE}
+        - SHELL_OH_MY_ZSH=${SHELL_OH_MY_ZSH}
+        - SHELL_OH_MY_ZSH_AUTOSUGESTIONS=${SHELL_OH_MY_ZSH_AUTOSUGESTIONS}
+        - SHELL_OH_MY_ZSH_ALIASES=${SHELL_OH_MY_ZSH_ALIASES}
         - BASE_IMAGE_TAG_PREFIX=${PHP_FPM_BASE_IMAGE_TAG_PREFIX}
         - LARADOCK_PHP_VERSION=${PHP_VERSION}
         - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
@@ -308,6 +311,9 @@ services:
       context: ./php-fpm
       args:
         - CHANGE_SOURCE=${CHANGE_SOURCE}
+        - SHELL_OH_MY_ZSH=${SHELL_OH_MY_ZSH}
+        - SHELL_OH_MY_ZSH_AUTOSUGESTIONS=${SHELL_OH_MY_ZSH_AUTOSUGESTIONS}
+        - SHELL_OH_MY_ZSH_ALIASES=${SHELL_OH_MY_ZSH_ALIASES}
         - BASE_IMAGE_TAG_PREFIX=${PHP_FPM_BASE_IMAGE_TAG_PREFIX}
         - LARADOCK_PHP_VERSION=7.4
         - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
@@ -412,6 +418,9 @@ services:
       context: ./php-fpm
       args:
         - CHANGE_SOURCE=${CHANGE_SOURCE}
+        - SHELL_OH_MY_ZSH=${SHELL_OH_MY_ZSH}
+        - SHELL_OH_MY_ZSH_AUTOSUGESTIONS=${SHELL_OH_MY_ZSH_AUTOSUGESTIONS}
+        - SHELL_OH_MY_ZSH_ALIASES=${SHELL_OH_MY_ZSH_ALIASES}
         - BASE_IMAGE_TAG_PREFIX=${PHP_FPM_BASE_IMAGE_TAG_PREFIX}
         - LARADOCK_PHP_VERSION=8.0
         - LARADOCK_PHALCON_VERSION=${PHALCON_VERSION}
@@ -492,8 +501,10 @@ services:
       - docker-in-docker:/certs/client
     # ports:
     #   - "${PHP_FPM_XDEBUG_PORT}:9003"
-    # expose:
-    #   - "9000"
+    expose:
+      - "9000"
+      - "8000"
+      - "8088"
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
     environment:
@@ -1750,7 +1761,7 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/mongo-webui:/data/db
     ports:
-      - "${MONGO_WEBUI_PORT}:3000"
+      - "${MONGO_WEBUI_PORT}:3333"
     networks:
       - backend
     depends_on:
