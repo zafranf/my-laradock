@@ -553,13 +553,13 @@ RUN set -eux; \
     if [ ${INSTALL_SWOOLE} = true ]; then \
       # Install Php Swoole Extension
       if   [ $(php -r "echo PHP_VERSION_ID - PHP_RELEASE_VERSION;") = "50600" ]; then \
-        echo '' | pecl -q install swoole-2.0.10; \
+        pecl install swoole-2.0.10; \
       elif [ $(php -r "echo PHP_VERSION_ID - PHP_RELEASE_VERSION;") = "70000" ]; then \
-        echo '' | pecl -q install swoole-4.3.5; \
+        pecl install swoole-4.3.5; \
       elif [ $(php -r "echo PHP_VERSION_ID - PHP_RELEASE_VERSION;") = "70100" ]; then \
-        echo '' | pecl -q install swoole-4.5.11; \
+        pecl install swoole-4.5.11; \
       else \
-        echo '' | pecl -q install swoole; \
+        pecl install swoole; \
       fi; \
       echo "extension=swoole.so" >> /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini; \
       ln -s /etc/php/${LARADOCK_PHP_VERSION}/mods-available/swoole.ini /etc/php/${LARADOCK_PHP_VERSION}/cli/conf.d/20-swoole.ini; \
@@ -695,6 +695,7 @@ ARG NODE_VERSION=node
 ENV NODE_VERSION ${NODE_VERSION}
 ARG INSTALL_NODE=false
 ARG INSTALL_NPM_GULP=false
+ARG INSTALL_NPM_FOREVER=false
 ARG INSTALL_NPM_BOWER=false
 ARG INSTALL_NPM_VUE_CLI=false
 ARG INSTALL_NPM_ANGULAR_CLI=false
@@ -1567,7 +1568,7 @@ bindkey "^?" backward-delete-char\n' >> /home/laradock/.zshrc && \
     echo "# Load Custom Aliases" >> /home/laradock/.zshrc && \
     echo "source /home/laradock/aliases.sh" >> /home/laradock/.zshrc && \
     echo "" >> /home/laradock/.zshrc \
-  ;fi \
+  ;fi && \
   if [ ${INSTALL_NODE} = true ]; then \
       echo "" >> /home/laradock/.zshrc && \
       echo 'export NVM_DIR="/home/laradock/.nvm"' >> /home/laradock/.zshrc && \
@@ -1661,6 +1662,16 @@ RUN set -eux; \
 #
 
 USER root
+
+# Additional
+# INSTALL forever
+RUN if [ ${INSTALL_NODE} = true ]; then \
+      if [ ${INSTALL_NPM_FOREVER} = true ]; then \
+        npm install -g forever && \
+        mkdir /.forever && \
+        chmod -R 777 /.forever \
+      ;fi \
+    ;fi
 
 # Clean up
 RUN apt-get clean && \
