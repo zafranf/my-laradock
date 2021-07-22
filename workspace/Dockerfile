@@ -1568,6 +1568,11 @@ bindkey "^?" backward-delete-char\n' >> /home/laradock/.zshrc && \
     echo "source /home/laradock/aliases.sh" >> /home/laradock/.zshrc && \
     echo "" >> /home/laradock/.zshrc \
   ;fi \
+  if [ ${INSTALL_NODE} = true ]; then \
+      echo "" >> /home/laradock/.zshrc && \
+      echo 'export NVM_DIR="/home/laradock/.nvm"' >> /home/laradock/.zshrc && \
+      echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> /home/laradock/.zshrc \
+  ;fi \
 ;fi
 
 USER root
