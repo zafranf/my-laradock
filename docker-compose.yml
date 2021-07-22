@@ -194,12 +194,8 @@ services:
       - DOCKER_TLS_CERTDIR=/certs
       - DOCKER_CERT_PATH=/certs/client
     networks:
-      frontend:
-        aliases: 
-          - api-sm.test
-      backend:
-        aliases: 
-          - api-sm.test
+      - frontend
+      - backend
     links:
       - docker-in-docker
 
@@ -312,7 +308,7 @@ services:
     networks:
       backend:
         aliases: 
-          - api-sm.test
+          - api.sm.test
     links:
       - docker-in-docker
 
@@ -423,9 +419,7 @@ services:
     depends_on:
       - workspace
     networks:
-      backend:
-        aliases: 
-          - api-sm.test
+      - backend
     links:
       - docker-in-docker
 
@@ -538,9 +532,7 @@ services:
     depends_on:
       - workspace
     networks:
-      backend:
-        aliases: 
-          - api-sm.test
+      - backend
     links:
       - docker-in-docker
 
@@ -655,11 +647,11 @@ services:
       - php-fpm-8.0
     networks:
       frontend:
-        aliases: 
-          - api-sm.test
       backend:
-        aliases: 
-          - api-sm.test
+          aliases: 
+            - api.sm.test
+            - notif.sm.test
+            - crawl.sm.test
 
   ### Blackfire ########################################
   blackfire:
