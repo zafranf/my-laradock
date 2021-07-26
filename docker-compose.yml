@@ -201,7 +201,7 @@ services:
       - docker-in-docker
 
   ### PHP-FPM ##############################################
-  php-fpm:
+  php:
     hostname: php
     build:
       context: ./php-fpm
@@ -315,7 +315,7 @@ services:
       - docker-in-docker
 
   ### PHP-FPM 7.4 ##############################################
-  php-fpm-7.4:
+  php74:
     hostname: php74
     build:
       context: ./php-fpm
@@ -408,8 +408,8 @@ services:
       - docker-in-docker:/certs/client
     # ports:
     #   - "${PHP_FPM_XDEBUG_PORT}:9003"
-    # expose:
-    #   - "9000"
+    expose:
+      - "9000"
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
     environment:
@@ -427,7 +427,7 @@ services:
       - docker-in-docker
 
   ### PHP-FPM 8.0 ##############################################
-  php-fpm-8.0:
+  php80:
     hostname: php80
     build:
       context: ./php-fpm
@@ -523,8 +523,6 @@ services:
     #   - "${PHP_FPM_XDEBUG_PORT}:9003"
     expose:
       - "9000"
-      - "8000"
-      - "8088"
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
     environment:
@@ -647,9 +645,9 @@ services:
       - "${NGINX_HOST_HTTPS_PORT}:443"
       - "${VARNISH_BACKEND_PORT}:81"
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       frontend:
       backend:
@@ -665,9 +663,9 @@ services:
       - BLACKFIRE_SERVER_ID=${BLACKFIRE_SERVER_ID}
       - BLACKFIRE_SERVER_TOKEN=${BLACKFIRE_SERVER_TOKEN}
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - backend
 
@@ -690,9 +688,9 @@ services:
       - "${APACHE_HOST_HTTP_PORT}:80"
       - "${APACHE_HOST_HTTPS_PORT}:443"
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - frontend
       - backend
@@ -980,9 +978,9 @@ services:
     ports:
       - "${MEMCACHED_HOST_PORT}:11211"
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - backend
 
@@ -993,9 +991,9 @@ services:
       - "${BEANSTALKD_HOST_PORT}:11300"
     privileged: true
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - backend
 
@@ -1028,9 +1026,9 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - backend
 
@@ -1080,9 +1078,9 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/cassandra:/var/lib/cassandra
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - backend
 
@@ -1115,9 +1113,9 @@ services:
       - GEARMAN_MYSQL_TABLE=${GEARMAN_MYSQL_TABLE}
     hostname: laradock-gearman
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - backend
 
@@ -1143,9 +1141,9 @@ services:
       - "${CADDY_HOST_HTTP_PORT}:80"
       - "${CADDY_HOST_HTTPS_PORT}:443"
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - frontend
       - backend
@@ -1182,9 +1180,9 @@ services:
     ports:
       - "${ADM_PORT}:8080"
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - frontend
       - backend
@@ -1241,9 +1239,9 @@ services:
       - "${ELASTICSEARCH_HOST_HTTP_PORT}:9200"
       - "${ELASTICSEARCH_HOST_TRANSPORT_PORT}:9300"
     depends_on:
-      - php-fpm
-      - php-fpm-7.4
-      - php-fpm-8.0
+      - php
+      - php74
+      - php80
     networks:
       - frontend
       - backend
