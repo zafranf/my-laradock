@@ -44,7 +44,6 @@ services:
         - INSTALL_XDEBUG=${WORKSPACE_INSTALL_XDEBUG}
         - INSTALL_PCOV=${WORKSPACE_INSTALL_PCOV}
         - INSTALL_PHPDBG=${WORKSPACE_INSTALL_PHPDBG}
-        - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
         - INSTALL_SSH2=${WORKSPACE_INSTALL_SSH2}
         - INSTALL_SOAP=${WORKSPACE_INSTALL_SOAP}
         - INSTALL_XSL=${WORKSPACE_INSTALL_XSL}
@@ -122,8 +121,6 @@ services:
         - AST_VERSION=${WORKSPACE_AST_VERSION}
         - IMAGEMAGICK_VERSION=${WORKSPACE_IMAGEMAGICK_VERSION}
         - TZ=${WORKSPACE_TIMEZONE}
-        - BLACKFIRE_CLIENT_ID=${BLACKFIRE_CLIENT_ID}
-        - BLACKFIRE_CLIENT_TOKEN=${BLACKFIRE_CLIENT_TOKEN}
         - INSTALL_POWERLINE=${WORKSPACE_INSTALL_POWERLINE}
         - INSTALL_SUPERVISOR=${WORKSPACE_INSTALL_SUPERVISOR}
         - INSTALL_FFMPEG=${WORKSPACE_INSTALL_FFMPEG}
@@ -186,7 +183,6 @@ services:
         - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
         - INSTALL_PCOV=${PHP_FPM_INSTALL_PCOV}
         - INSTALL_PHPDBG=${PHP_FPM_INSTALL_PHPDBG}
-        - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
         - INSTALL_SSH2=${PHP_FPM_INSTALL_SSH2}
         - INSTALL_SOAP=${PHP_FPM_INSTALL_SOAP}
         - INSTALL_XSL=${PHP_FPM_INSTALL_XSL}
@@ -300,7 +296,6 @@ services:
         - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
         - INSTALL_PCOV=${PHP_FPM_INSTALL_PCOV}
         - INSTALL_PHPDBG=${PHP_FPM_INSTALL_PHPDBG}
-        - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
         - INSTALL_SSH2=${PHP_FPM_INSTALL_SSH2}
         - INSTALL_SOAP=${PHP_FPM_INSTALL_SOAP}
         - INSTALL_XSL=${PHP_FPM_INSTALL_XSL}
@@ -412,7 +407,6 @@ services:
         - INSTALL_XDEBUG=${PHP_FPM_INSTALL_XDEBUG}
         - INSTALL_PCOV=${PHP_FPM_INSTALL_PCOV}
         - INSTALL_PHPDBG=${PHP_FPM_INSTALL_PHPDBG}
-        - INSTALL_BLACKFIRE=${INSTALL_BLACKFIRE}
         - INSTALL_SSH2=${PHP_FPM_INSTALL_SSH2}
         - INSTALL_SOAP=${PHP_FPM_INSTALL_SOAP}
         - INSTALL_XSL=${PHP_FPM_INSTALL_XSL}
@@ -589,6 +583,22 @@ services:
     networks:
       - backend
 
+  ### Laravel Echo Server #######################################
+  laravel-echo-server:
+    build:
+      context: ./laravel-echo-server
+      args:
+        - CHANGE_SOURCE=${CHANGE_SOURCE}
+    volumes:
+      - ./laravel-echo-server/laravel-echo-server.json:/app/laravel-echo-server.json:ro
+    ports:
+      - "${LARAVEL_ECHO_SERVER_PORT}:6001"
+    links:
+      - redis
+    networks:
+      - frontend
+      - backend
+
   ### NGINX Server #########################################
   nginx:
     build:
@@ -609,7 +619,6 @@ services:
     ports:
       - "${NGINX_HOST_HTTP_PORT}:80"
       - "${NGINX_HOST_HTTPS_PORT}:443"
-      - "${VARNISH_BACKEND_PORT}:81"
     depends_on:
       - php
       - php74
@@ -716,22 +725,6 @@ services:
       - frontend
       - backend
 
-  ### Laravel Echo Server #######################################
-  laravel-echo-server:
-    build:
-      context: ./laravel-echo-server
-      args:
-        - CHANGE_SOURCE=${CHANGE_SOURCE}
-    volumes:
-      - ./laravel-echo-server/laravel-echo-server.json:/app/laravel-echo-server.json:ro
-    ports:
-      - "${LARAVEL_ECHO_SERVER_PORT}:6001"
-    links:
-      - redis
-    networks:
-      - frontend
-      - backend
-
   ### Docker-in-Docker ################################################
   docker-in-docker:
     image: docker:19.03-dind
@@ -780,87 +773,6 @@ services:
       - backend
     depends_on:
       - mongo
-
-  ### Metabase #################################################
-  metabase:
-    image: metabase/metabase:latest
-    environment:
-      - MB_DB_FILE=/metabase-data/${METABASE_DB_FILE}
-    ports:
-      - ${METABASE_PORT}:3000
-    volumes:
-      - ${DATA_PATH_HOST}/metabase-data:/metabase-data
-    networks:
-      - backend
-
-  ### Weaver (Athena PDF) #################################################
-  weaver:
-    image: arachnysdocker/athenapdf-service
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./weaver/conf/sample.env
-    networks:
-      - backend
-    depends_on:
-      - workspace
-
-  ### IDE-THEIA ################################################
-  ide-theia:
-    build:
-      context: ./ide-theia
-    volumes:
-      - ${APP_CODE_PATH_HOST}:/home/project
-    ports:
-      - "${IDE_THEIA_PORT}:3000"
-    networks:
-      - backend
-
-  ### IDE-WEBIDE ################################################
-  ide-webide:
-    build:
-      context: ./ide-webide
-    volumes:
-      - ${DATA_PATH_HOST}/ide/webide/ide.db:/root/.coding-ide/ide.db
-    ports:
-      - "${IDE_WEBIDE_PORT}:8080"
-    networks:
-      - backend
-
-  ### IDE-CODIAD ################################################
-  ide-codiad:
-    build:
-      context: ./ide-codiad
-    environment:
-      - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
-      - TZ=${WORKSPACE_TIMEZONE}
-      - PGID=1000
-      - PUID=1000
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-      - ${DATA_PATH_HOST}/ide/codiad:/config
-    ports:
-      - "${IDE_CODIAD_PORT}:80"
-    networks:
-      - backend
-
-  ### IDE-ICECODER ################################################
-  ide-icecoder:
-    build:
-      context: ./ide-icecoder
-    environment:
-      - DOCUMENT_ROOT=${APP_CODE_PATH_CONTAINER}
-      - TZ=${WORKSPACE_TIMEZONE}
-      - PGID=1000
-      - PUID=1000
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${APP_CODE_PATH_HOST}:/home/laradock/ICEcoder/dev
-    ports:
-      - "${IDE_ICECODER_PORT}:8080"
-    networks:
-      - backend
 
   ### DOCKER-REGISTRY ################################################
   docker-registry:
