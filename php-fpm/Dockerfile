@@ -301,6 +301,7 @@ USER laradock
 RUN if [ ${SHELL_OH_MY_ZSH} = true ]; then \
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --keep-zshrc" && \
     sed -i -r 's/^plugins=\(.*?\)$/plugins=(laravel5)/' /home/laradock/.zshrc && \
+    sed -i 's/robbyrussell/murilasso/' /home/laradock/.zshrc && \
     echo '\n\
 bindkey "^[OB" down-line-or-search\n\
 bindkey "^[OC" forward-char\n\
@@ -1489,5 +1490,3 @@ WORKDIR /var/www
 CMD ["php-fpm"]
 
 EXPOSE 9000
-EXPOSE 8000
-EXPOSE 8088

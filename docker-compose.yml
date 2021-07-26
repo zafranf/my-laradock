@@ -59,6 +59,7 @@ volumes:
 services:
   ### Workspace Utilities ##################################
   workspace:
+    hostname: workspace
     build:
       context: ./workspace
       args:
@@ -201,6 +202,7 @@ services:
 
   ### PHP-FPM ##############################################
   php-fpm:
+    hostname: php
     build:
       context: ./php-fpm
       args:
@@ -314,6 +316,7 @@ services:
 
   ### PHP-FPM 7.4 ##############################################
   php-fpm-7.4:
+    hostname: php74
     build:
       context: ./php-fpm
       args:
@@ -425,6 +428,7 @@ services:
 
   ### PHP-FPM 8.0 ##############################################
   php-fpm-8.0:
+    hostname: php80
     build:
       context: ./php-fpm
       args:
