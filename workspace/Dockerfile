@@ -1564,12 +1564,12 @@ bindkey "^?" backward-delete-char\n' >> /home/laradock/.zshrc && \
     sed -i '1iZSH_AUTOSUGGEST_USE_ASYNC=1' /home/laradock/.zshrc && \
     sed -i '1iTERM=xterm-256color' /home/laradock/.zshrc \
   ;fi && \
-  if [ ${SHELL_OH_MY_ZSH_ALIASES} = true ]; then \
-    echo "" >> /home/laradock/.zshrc && \
-    echo "# Load Custom Aliases" >> /home/laradock/.zshrc && \
-    echo "source /home/laradock/aliases.sh" >> /home/laradock/.zshrc && \
-    echo "" >> /home/laradock/.zshrc \
-  ;fi && \
+  # if [ ${SHELL_OH_MY_ZSH_ALIASES} = true ]; then \
+  #   echo "" >> /home/laradock/.zshrc && \
+  #   echo "# Load Custom Aliases" >> /home/laradock/.zshrc && \
+  #   echo "source /home/laradock/aliases.sh" >> /home/laradock/.zshrc && \
+  #   echo "" >> /home/laradock/.zshrc \
+  # ;fi && \
   if [ ${INSTALL_NODE} = true ]; then \
       echo "" >> /home/laradock/.zshrc && \
       echo 'export NVM_DIR="/home/laradock/.nvm"' >> /home/laradock/.zshrc && \
