@@ -60,7 +60,7 @@ RUN if [ ${SHELL_OH_MY_ZSH} = true ]; then \
 ;fi
 
 ARG SHELL_OH_MY_ZSH_AUTOSUGESTIONS=false
-ARG SHELL_OH_MY_ZSH_ALIASES=false
+# ARG SHELL_OH_MY_ZSH_ALIASES=false
 
 USER laradock
 RUN if [ ${SHELL_OH_MY_ZSH} = true ]; then \

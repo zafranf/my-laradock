@@ -134,6 +134,8 @@ ARG INSTALL_NPM_VUE_CLI=false
 ARG INSTALL_NPM_ANGULAR_CLI=false
 ARG NPM_REGISTRY
 ENV NPM_REGISTRY ${NPM_REGISTRY}
+ARG NPM_VERSION=
+ENV NPM_VERSION ${NPM_VERSION}
 ARG NPM_FETCH_RETRIES
 ENV NPM_FETCH_RETRIES ${NPM_FETCH_RETRIES}
 ARG NPM_FETCH_RETRY_FACTOR
@@ -160,6 +162,9 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
         && npm config set fetch-retry-maxtimeout ${NPM_FETCH_RETRY_MAXTIMEOUT} \
         && if [ ${NPM_REGISTRY} ]; then \
         npm config set registry ${NPM_REGISTRY} \
+        ;fi \
+        && if [ ${NPM_VERSION} ]; then \
+        npm install -g npm@${NPM_VERSION} \
         ;fi \
         && if [ ${INSTALL_NPM_GULP} = true ]; then \
         npm install -g gulp \
@@ -295,7 +300,7 @@ RUN if [ ${SHELL_OH_MY_ZSH} = true ]; then \
 ;fi
 
 ARG SHELL_OH_MY_ZSH_AUTOSUGESTIONS=false
-ARG SHELL_OH_MY_ZSH_ALIASES=false
+# ARG SHELL_OH_MY_ZSH_ALIASES=false
 
 USER laradock
 RUN if [ ${SHELL_OH_MY_ZSH} = true ]; then \
@@ -1480,6 +1485,8 @@ RUN groupmod -o -g ${PGID} www-data && \
 RUN if [ ${INSTALL_FAKETIME} = true ]; then \
     echo "/usr/lib/x86_64-linux-gnu/faketime/libfaketime.so.1" > /etc/ld.so.preload \
 ;fi
+
+RUN apt-get update -yqq && apt-get install -yqq procps
 
 # Configure locale.
 ARG LOCALE=POSIX

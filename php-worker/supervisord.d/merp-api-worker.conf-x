@@ -1,0 +1,8 @@
+[program:merp-api-worker]
+process_name=%(program_name)s_%(process_num)02d
+command=php /var/www/merpati/api/artisan queue:work --tries=1
+autostart=true
+autorestart=true
+numprocs=2
+user=laradock
+redirect_stderr=true

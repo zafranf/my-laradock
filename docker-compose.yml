@@ -59,6 +59,7 @@ services:
         - NVM_NODEJS_ORG_MIRROR=${WORKSPACE_NVM_NODEJS_ORG_MIRROR}
         - INSTALL_NODE=${WORKSPACE_INSTALL_NODE}
         - NPM_REGISTRY=${WORKSPACE_NPM_REGISTRY}
+        - NPM_VERSION=${WORKSPACE_NPM_VERSION}
         - NPM_FETCH_RETRIES=${WORKSPACE_NPM_FETCH_RETRIES}
         - NPM_FETCH_RETRY_FACTOR=${WORKSPACE_NPM_FETCH_RETRY_FACTOR}
         - NPM_FETCH_RETRY_MINTIMEOUT=${WORKSPACE_NPM_FETCH_RETRY_MINTIMEOUT}
@@ -150,6 +151,8 @@ services:
       - "${WORKSPACE_VUE_CLI_SERVE_HOST_PORT}:8080"
       - "${WORKSPACE_VUE_CLI_UI_HOST_PORT}:8000"
       - "${WORKSPACE_ANGULAR_CLI_SERVE_HOST_PORT}:4200"
+    # expose:
+    #   - 1313
     tty: true
     environment:
       - PHP_IDE_CONFIG=${PHP_IDE_CONFIG}
@@ -271,7 +274,7 @@ services:
       - workspace
     networks:
       backend:
-        aliases: 
+        aliases:
           - api.sm.test
     links:
       - docker-in-docker
@@ -483,7 +486,6 @@ services:
     #   - "${PHP_FPM_XDEBUG_PORT}:9003"
     expose:
       - "9000"
-      - "8000"
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
     environment:
@@ -499,6 +501,7 @@ services:
       - backend
     links:
       - docker-in-docker
+    command: bash -c "php-fpm -D -R && cd /var/www/merpati/api/ && runuser -u laradock -- php artisan octane:start --host 0.0.0.0 --watch"
 
   ### PHP Worker ############################################
   worker:
@@ -636,10 +639,8 @@ services:
     networks:
       frontend:
       backend:
-          aliases: 
-            - api.sm.test
-            - notif.sm.test
-            - crawl.sm.test
+        aliases:
+          - api.sm.test
 
   ### Minio ################################################
   minio:
@@ -748,8 +749,8 @@ services:
       - 2375
     networks:
       backend:
-        aliases: 
-          - api-sm.test
+        aliases:
+          - api.sm.test
 
   ### REDISWEBUI ################################################
   redis-webui:
