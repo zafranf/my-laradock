@@ -36,7 +36,7 @@ COPY logrotate/nginx /etc/logrotate.d/
 # Set upstream conf and remove the default conf
 RUN echo "upstream php-upstream { server ${PHP_UPSTREAM_CONTAINER}:${PHP_UPSTREAM_PORT}; }" > /etc/nginx/conf.d/upstream.conf \
   && rm /etc/nginx/conf.d/default.conf
-RUN echo "upstream octane-upstream { server php80:8000; }" > /etc/nginx/conf.d/octane-upstream.conf
+# RUN echo "upstream octane-upstream { server php80:8000; }" > /etc/nginx/conf.d/octane-upstream.conf
 # RUN echo "upstream api-merpt-upstream { server php80:8800; }" > /etc/nginx/conf.d/api-merpt-upstream.conf
 # RUN echo "upstream api-nyp-upstream { server php80:8880; }" > /etc/nginx/conf.d/api-nyp-upstream.conf
 # RUN echo "upstream wamu-upstream { server php80:8888; }" > /etc/nginx/conf.d/wamu-upstream.conf
