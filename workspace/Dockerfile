@@ -966,12 +966,12 @@ RUN if [ ${INSTALL_LARAVEL_ENVOY} = true ]; then \
 
 USER laradock
 
-ARG INSTALL_LARAVEL_INSTALLER=false
+# ARG INSTALL_LARAVEL_INSTALLER=false
 
-RUN if [ ${INSTALL_LARAVEL_INSTALLER} = true ]; then \
-    # Install the Laravel Installer
-	composer global require "laravel/installer" \
-;fi
+# RUN if [ ${INSTALL_LARAVEL_INSTALLER} = true ]; then \
+#     # Install the Laravel Installer
+# 	composer global require "laravel/installer" \
+# ;fi
 
 USER root
 

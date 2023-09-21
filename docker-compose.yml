@@ -634,8 +634,8 @@ services:
       - "${NGINX_HOST_HTTPS_PORT}:443"
     depends_on:
       - php
-      - php74
-      - php80
+      # - php74
+      # - php80
     networks:
       frontend:
       backend:
