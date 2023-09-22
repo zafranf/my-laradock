@@ -1662,7 +1662,7 @@ RUN set -eux; \
     fi
 
 # Install Hugo
-RUN apt install -y hugo
+# RUN apt install -y hugo
 
 #
 #--------------------------------------------------------------------------
