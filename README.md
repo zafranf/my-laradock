@@ -1,6 +1,7 @@
 .env-bak ubah jadi .env
 
 Struktur folder
+```
 - _Laradock
 - sociomile
 -- api-sm
@@ -10,6 +11,7 @@ Struktur folder
 -- notif
 -- webhook
 -- webhook-a4
+```
 
 Build
 `docker compose up -d nginx worker mariadb redis mongo php`
